@@ -1,14 +1,37 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Segment, Form, Button } from "semantic-ui-react";
+import { createEvent, updateEvent } from "../eventActions";
+import cuid from "cuid";
 
-class EventForm extends Component {
-  state = {
+//8-12
+const mapState = (state, ownProps) => {
+  const eventId = ownProps.match.params.id;
+
+  let event = {
     title: "",
     date: "",
     city: "",
     venue: "",
     hostedBy: ""
   };
+
+  if (eventId && state.events.length > 0) {
+    event = state.events.filter(event => event.id === eventId)[0];
+  }
+
+  return {
+    event
+  };
+};
+
+const mapActions = {
+  createEvent,
+  updateEvent
+};
+
+class EventForm extends Component {
+  state = { ...this.props.event }; //8-12
 
   componentDidMount() {
     if (this.props.selectedEvent !== null) {
@@ -21,8 +44,19 @@ class EventForm extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
 
-    if (this.state.id) this.props.updateEvent(this.state);
-    else this.props.createEvent(this.state);
+    if (this.state.id) {
+      this.props.updateEvent(this.state);
+      this.props.history.push(`/events/${this.state.id}`);
+    } else {
+      const newEvent = {
+        ...this.state,
+        id: cuid(),
+        hostPhotoURL: "/assets/user.png",
+        attendees: []
+      };
+      this.props.createEvent(newEvent);
+      this.props.history.push(`/events`);
+    }
   };
 
   handleInputChange = ({ target: { name, value } }) => {
@@ -32,7 +66,6 @@ class EventForm extends Component {
   };
 
   render() {
-    const { cancelFormOpen } = this.props;
     const { title, date, city, venue, hostedBy } = this.state;
     return (
       <Segment>
@@ -86,7 +119,7 @@ class EventForm extends Component {
           <Button positive type="submit">
             Submit
           </Button>
-          <Button onClick={cancelFormOpen} type="button">
+          <Button onClick={this.props.history.goBack} type="button">
             Cancel
           </Button>
         </Form>
@@ -94,4 +127,7 @@ class EventForm extends Component {
     );
   }
 }
-export default EventForm;
+export default connect(
+  mapState,
+  mapActions
+)(EventForm);
