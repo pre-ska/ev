@@ -10,6 +10,7 @@ const DateInput = ({
   meta: { touched, error },
   ...rest
 }) => {
+  console.log(input);
   return (
     <Form.Field error={touched && !!error}>
       <DatePicker
