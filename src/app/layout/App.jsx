@@ -10,6 +10,7 @@ import SettingsDashboard from "../../features/user/Settings/SettingsDashboard";
 import UserDetailedPage from "../../features/user/UserDetailed/UserDetailedPage";
 import EventForm from "../../features/event/EventForm/EventForm";
 import TestComponent from "../../features/testarea/TestComponent";
+import ModalManager from "../../features/modals/ModalManager";
 
 /*
 razbio sam rute na dva dijela
@@ -27,6 +28,7 @@ class App extends Component {
   render() {
     return (
       <>
+        <ModalManager />
         <Route exact path="/" component={HomePage} />
         <Route
           path="/(.+)"
