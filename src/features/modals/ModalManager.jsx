@@ -16,6 +16,7 @@ const mapState = state => ({
 
 const ModalManager = ({ currentModal }) => {
   let renderedModal;
+
   if (currentModal) {
     const { modalType, modalProps } = currentModal;
     const ModalComponent = modalLookup[modalType];
