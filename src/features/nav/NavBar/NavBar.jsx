@@ -42,7 +42,8 @@ class NavBar extends Component {
             Re-vents
           </Menu.Item>
           <Menu.Item as={NavLink} exact to="/events" name="Events" />
-          {authenticated && (
+
+          {authenticated ? (
             <Fragment>
               (<Menu.Item as={NavLink} to="/people" name="People" />
               <Menu.Item as={NavLink} to="/test" name="Test" />
@@ -57,13 +58,11 @@ class NavBar extends Component {
                 />
               </Menu.Item>
               )
+              <SignedInMenu
+                signOut={this.handleSignOut}
+                currentUser={auth.currentUser}
+              />
             </Fragment>
-          )}
-          {authenticated ? (
-            <SignedInMenu
-              signOut={this.handleSignOut}
-              currentUser={auth.currentUser}
-            />
           ) : (
             <SignedOutMenu
               signIn={this.handleSignIn}

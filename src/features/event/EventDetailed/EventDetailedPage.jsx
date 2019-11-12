@@ -25,6 +25,7 @@ const mapState = (state, ownProps) => {
   };
 };
 const EventDetailedPage = ({ event }) => {
+  console.log(event);
   return (
     <Grid>
       <Grid.Column width={10}>
