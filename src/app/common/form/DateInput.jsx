@@ -4,21 +4,26 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const DateInput = ({
-  input,
+  input: { value, onChange, onBlur },
   width,
   placeholder,
   meta: { touched, error },
   ...rest
 }) => {
-  console.log(input);
   return (
     <Form.Field error={touched && !!error}>
       <DatePicker
         {...rest}
         placeholderText={placeholder}
-        selected={input.value ? new Date(input.value) : null}
-        onChange={input.onChange}
-        onBlur={input.onBlur}
+        selected={
+          value
+            ? Object.prototype.toString.call(value) !== "[object Date]"
+              ? value.toDate()
+              : value
+            : null
+        }
+        onChange={onChange}
+        onBlur={(e, value) => onBlur(value)}
         onChangeRaw={e => e.preventDefault()}
       />
       {touched && error && (
